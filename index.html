@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API CHATGPT NODEJS</title>
+    <style>
+      /* Estilos CSS para a página */
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .chat-container {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        padding: 10px;
+        margin-top: 20px;
+      }
+
+      .user-message {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .bot-message {
+        background-color: #fff;
+        color: #000;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      label {
+        margin-bottom: 10px;
+      }
+
+      input,
+      textarea {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 4px;
+        outline: none;
+        width: 100%;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 200px;
+      }
+
+      button {
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .response {
+        margin-top: 20px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1></h1>
+    <div class="chat-container">
+      <div id="messages"></div>
+      <form id="form">
+        <label for="prompt">Digite um prompt:</label>
+        <textarea
+          id="prompt"
+          placeholder="Digite seu prompt aqui..."
+        ></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+    <div id="response" class="response"></div>
+
+    <script>
+      // Script JavaScript para fazer a requisição ao backend e exibir a resposta na página
+      document
+        .getElementById("form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const prompt = document.getElementById("prompt").value;
+
+          try {
+            const response = await fetch(
+              "http://localhost:3030/submit-request",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ prompt }),
+              }
+            );
+
+            const result = await response.json();
+
+            if (response.ok) {
+              const messagesContainer = document.getElementById("messages");
+              const userMessage = document.createElement("div");
+              userMessage.classList.add("user-message");
+              userMessage.innerText = prompt;
+              messagesContainer.appendChild(userMessage);
+
+              const botMessage = document.createElement("div");
+              botMessage.classList.add("bot-message");
+              botMessage.innerText = result.data;
+              messagesContainer.appendChild(botMessage);
+            } else {
+              document.getElementById("response").innerText =
+                result.error || "Houve um erro com o servidor";
+            }
+          } catch (error) {
+            document.getElementById("response").innerText =
+              "Houve um erro com a requisição";
+          }
+        });
+    </script>
+  </body>
+</html>
