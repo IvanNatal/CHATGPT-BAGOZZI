@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API CHATGPT NODEJS</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>Chat com NODEBOT</h1>
+    <div class="chat-container">
+      <div id="messages" class="messages-container"></div>
+      <form id="form" class="form-container">
+        <label for="prompt"></label>
+        <textarea
+          id="prompt"
+          class="input-text"
+          placeholder="Digite seu prompt aqui..."
+        ></textarea>
+        <button type="submit" class="send-button">Enviar</button>
+        <button type="button" id="clear-button" class="clear-button">
+          Limpar
+        </button>
+        <button id="clear-chat-button">Limpar Chat</button>
+      </form>
+    </div>
+    <div id="response"></div>
+    <script src="./main.js"></script>
+  </body>
+</html>
